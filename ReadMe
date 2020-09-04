@@ -1,0 +1,34 @@
+uri-caching-interceptor.service.ts
+cache-registration.service.ts
+
+in  uri-caching-interceptor.service.ts
+import { Observable,of } from "rxjs";
+import "rxjs/add/operator/do";
+import "rxjs/observable/of";
+import { share } from 'rxjs/operators';
+
+The above lines will be changed based on angular js and Rxjs version , you may need to intall rx campact js also 
+
+
+
+in app.module.ts
+add import these Changes
+-- 
+import { CacheRegistrationService } from "./cache-registration.service";
+import { UriCachingInterceptor } from "./uri-caching-interceptor.service";
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
+
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: UriCachingInterceptor,
+    multi: true
+  },CacheRegistrationService ],
+
+
+Constructor in service class 
+  constructor(private cacheRegistrationService: CacheRegistrationService ,private http: HttpClient) { 
+    cacheRegistrationService.addToCache(this.baseUrl);
+  }
+  
+  --- Resource ----
+  https://medium.com/@vikeshm/data-caching-angular-http-interceptor-2d87f95e2340
